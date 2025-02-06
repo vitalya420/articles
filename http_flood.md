@@ -144,7 +144,7 @@ content-length: 17\r\n
 - SSL сертифікати присутні.
 - Connection timeout 60 секунд та max body size 10 мегебайт.
 
-### DoS за допомогою скрипта із GitHub (Script Kiddie)
+### DoS за допомогою скрипта із GitHub
 Тут тестимо якийсь скрипт
 
 
