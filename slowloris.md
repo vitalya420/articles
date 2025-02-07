@@ -139,3 +139,5 @@ Connection: keep-alive\r\n
 - Якщо ви хочете максимальне навантаження в один момент — груповий таймаут підходить краще.
 
 - Для гнучкого контролю кожного з'єднання — використовуйте окремий таймаут.
+
+![strategy](https://github.com/vitalya420/articles/blob/main/images/image2.png?raw=true)
