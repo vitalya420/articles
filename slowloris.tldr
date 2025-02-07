@@ -50,19 +50,21 @@
 		{
 			"id": "pointer:pointer",
 			"typeName": "pointer",
-			"x": 364,
-			"y": 294,
-			"lastActivityTimestamp": 1738938930157,
+			"x": 1293.2736700306373,
+			"y": 106.81530973884176,
+			"lastActivityTimestamp": 1738939106583,
 			"meta": {}
 		},
 		{
 			"followingUserId": null,
 			"opacityForNextShape": 1,
-			"stylesForNextShape": {},
+			"stylesForNextShape": {
+				"tldraw:textAlign": "middle"
+			},
 			"brush": null,
 			"scribbles": [],
 			"cursor": {
-				"type": "cross",
+				"type": "default",
 				"rotation": 0
 			},
 			"isFocusMode": false,
@@ -72,7 +74,7 @@
 			"screenBounds": {
 				"x": 0,
 				"y": 0,
-				"w": 1029,
+				"w": 1702,
 				"h": 543
 			},
 			"insets": [
@@ -114,47 +116,30 @@
 			"typeName": "instance_page_state"
 		},
 		{
-			"x": 0,
-			"y": 0,
+			"x": -46.273670030637334,
+			"y": 27.184690261158234,
 			"z": 1,
 			"meta": {},
 			"id": "camera:page:page",
 			"typeName": "camera"
 		},
 		{
-			"x": 332,
-			"y": 181,
+			"x": 388,
+			"y": 101.8046875,
 			"rotation": 0,
 			"isLocked": false,
 			"opacity": 1,
 			"meta": {},
-			"id": "shape:RrAnhwHDfU2UduARM2nRj",
-			"type": "draw",
+			"id": "shape:9QPNNcl3JrITqiS-3qPLN",
+			"type": "text",
 			"props": {
-				"segments": [
-					{
-						"type": "free",
-						"points": [
-							{
-								"x": 0,
-								"y": 0,
-								"z": 0.5
-							},
-							{
-								"x": 0,
-								"y": 1,
-								"z": 0.5
-							}
-						]
-					}
-				],
 				"color": "black",
-				"fill": "none",
-				"dash": "draw",
 				"size": "m",
-				"isComplete": true,
-				"isClosed": false,
-				"isPen": false,
+				"w": 16,
+				"text": "",
+				"font": "draw",
+				"textAlign": "start",
+				"autoSize": true,
 				"scale": 1
 			},
 			"parentId": "page:page",
@@ -162,183 +147,84 @@
 			"typeName": "shape"
 		},
 		{
-			"x": 383,
-			"y": 182,
+			"x": 247,
+			"y": 230.8046875,
 			"rotation": 0,
 			"isLocked": false,
 			"opacity": 1,
 			"meta": {},
-			"id": "shape:TAbpVk8Izz13Xliz6r3sf",
-			"type": "draw",
+			"id": "shape:HIrXN7uTTBYMdPsgTEB91",
+			"type": "text",
 			"props": {
-				"segments": [
-					{
-						"type": "free",
-						"points": [
-							{
-								"x": 0,
-								"y": 0,
-								"z": 0.5
-							}
-						]
-					}
-				],
 				"color": "black",
-				"fill": "none",
-				"dash": "draw",
 				"size": "m",
-				"isComplete": true,
-				"isClosed": false,
-				"isPen": false,
+				"w": 123.765625,
+				"text": "Початок \nпрограми",
+				"font": "draw",
+				"textAlign": "middle",
+				"autoSize": true,
 				"scale": 1
 			},
 			"parentId": "page:page",
-			"index": "a27Li",
+			"index": "a2AzE",
 			"typeName": "shape"
 		},
 		{
-			"x": 310,
-			"y": 224,
+			"x": 399,
+			"y": 247,
 			"rotation": 0,
 			"isLocked": false,
 			"opacity": 1,
 			"meta": {},
-			"id": "shape:jGBur3vC2T64PIAexFDxz",
-			"type": "draw",
+			"id": "shape:-y0LT4t3_QI2WJH1d8jmq",
+			"type": "arrow",
 			"props": {
-				"segments": [
-					{
-						"type": "free",
-						"points": [
-							{
-								"x": 0,
-								"y": 0,
-								"z": 0.5
-							},
-							{
-								"x": 1,
-								"y": 0,
-								"z": 0.5
-							},
-							{
-								"x": 2,
-								"y": 2,
-								"z": 0.5
-							},
-							{
-								"x": 5,
-								"y": 3,
-								"z": 0.5
-							},
-							{
-								"x": 7,
-								"y": 5,
-								"z": 0.5
-							},
-							{
-								"x": 11,
-								"y": 9,
-								"z": 0.5
-							},
-							{
-								"x": 17,
-								"y": 13,
-								"z": 0.5
-							},
-							{
-								"x": 23,
-								"y": 14,
-								"z": 0.5
-							},
-							{
-								"x": 29,
-								"y": 17,
-								"z": 0.5
-							},
-							{
-								"x": 36,
-								"y": 17,
-								"z": 0.5
-							},
-							{
-								"x": 44,
-								"y": 17,
-								"z": 0.5
-							},
-							{
-								"x": 52,
-								"y": 17,
-								"z": 0.5
-							},
-							{
-								"x": 60,
-								"y": 16,
-								"z": 0.5
-							},
-							{
-								"x": 70,
-								"y": 13,
-								"z": 0.5
-							},
-							{
-								"x": 77,
-								"y": 10,
-								"z": 0.5
-							},
-							{
-								"x": 86,
-								"y": 7,
-								"z": 0.5
-							},
-							{
-								"x": 94,
-								"y": 3,
-								"z": 0.5
-							},
-							{
-								"x": 101,
-								"y": -1,
-								"z": 0.5
-							},
-							{
-								"x": 107,
-								"y": -5,
-								"z": 0.5
-							},
-							{
-								"x": 112,
-								"y": -11,
-								"z": 0.5
-							},
-							{
-								"x": 115,
-								"y": -17,
-								"z": 0.5
-							},
-							{
-								"x": 118,
-								"y": -20,
-								"z": 0.5
-							},
-							{
-								"x": 120,
-								"y": -24,
-								"z": 0.5
-							}
-						]
-					}
-				],
-				"color": "black",
-				"fill": "none",
 				"dash": "draw",
 				"size": "m",
-				"isComplete": true,
-				"isClosed": false,
-				"isPen": false,
+				"fill": "none",
+				"color": "black",
+				"labelColor": "black",
+				"bend": 0,
+				"start": {
+					"x": 0,
+					"y": 0
+				},
+				"end": {
+					"x": 208,
+					"y": -113
+				},
+				"arrowheadStart": "none",
+				"arrowheadEnd": "arrow",
+				"text": "",
+				"labelPosition": 0.5,
+				"font": "draw",
 				"scale": 1
 			},
 			"parentId": "page:page",
-			"index": "a36Um",
+			"index": "a369C",
+			"typeName": "shape"
+		},
+		{
+			"x": 620.078125,
+			"y": 78.8046875,
+			"rotation": 0,
+			"isLocked": false,
+			"opacity": 1,
+			"meta": {},
+			"id": "shape:pg78BTWVenZKoZCamjNR1",
+			"type": "text",
+			"props": {
+				"color": "black",
+				"size": "m",
+				"w": 151.84375,
+				"text": "Створюємо\nнеблокуюче\nз'єднання",
+				"font": "draw",
+				"textAlign": "middle",
+				"autoSize": true,
+				"scale": 1
+			},
+			"parentId": "page:page",
+			"index": "a43n8",
 			"typeName": "shape"
 		}
 	]
