@@ -1,4 +1,4 @@
-# Атака Slow Loris під капотом
+# Атака Slow Loris from scratch
 
 Дана стаття призначена для навчання принципам **Slow Loris атаки** та написання власного скрипта на Python. Варто зазначити, що цей тип атаки є **досить старим**, і сучасні системи можуть мати захист від неї. Однак цей матеріал створений виключно для **самонавчання та розуміння** принципів роботи цієї атаки. Slow Loris все ще може бути **ефективним** проти **погано сконфігурованих серверів**.
 
@@ -195,7 +195,7 @@ def delay(time, sock):
     sock.send(b'\n')
 
 def on_ssl_handske_completed(sock):
-    # Handskae completed
+    # Handshake completed
     sock.send(req)
     delay(55, sock)
 
@@ -220,3 +220,17 @@ while True:
 ```
 
 **Це лише загальний приклад.** Повний код буде доступний за посиланням.
+
+## Запускаємо
+
+
+## Висновок
+
+
+## Корисні посилання
+
+- [OG Slowloris Code](https://github.com/GHubgenius/slowloris.pl)  
+- [epoll vs kqueue Benchmark](https://daemonforums.org/showthread.php?t=2124)  
+- [Python Selectors Documentation](https://docs.python.org/uk/3.13/library/selectors.html)  
+- [kqueue API Documentation](https://man.freebsd.org/cgi/man.cgi?kqueue)  
+- [epoll API Documentation](https://man7.org/linux/man-pages/man7/epoll.7.html)
