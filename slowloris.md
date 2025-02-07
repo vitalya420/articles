@@ -124,11 +124,11 @@ X-Dummy-Header-3: ccccccccccccccccccccccccccccccccccccccccccccc
 GET / HTTP/1.1\r\n
 Host: httpbin.org\r\n
 Connection: keep-alive\r\n
-\r     <-- Зверніть увагу! Останній \n відстуній!
+\r     <-- Зверніть увагу! Останній \n відсутній!
 ```
 5. **Утримання з'єднання.** Перед завершенням таймауту (на 54-55-й секунді) ми відправляємо останній байт `\n`, щоб підтримати з'єднання.
 
-    - Після відправки `\n` запит буде вважатися завершений і таймаут оновиться, тому знову віправляємо незавершений HTTP запит та робимо відлік часу.
+    - Після відправки `\n` запит буде вважатися завершений і таймаут оновиться, тому знову відправляємо незавершений HTTP запит та робимо відлік часу.
 
 6. **Паралельне відкриття додаткових з'єднань.** Відправка незавершеного запиту займає декілька мілісекунд або секунд, тому в нас є достатньо часу, щоб відкрити ще сотні або навіть тисячі нових з'єднань!
 
@@ -146,3 +146,77 @@ Connection: keep-alive\r\n
 ## Event-Driven архітектура для встановлення з'єднаннь
 
 В цій статті ми не будемо описувати принцип `Event-Driven` архітектури, але її будемо використовувати для встановлення великої кількості з'єднань. Такий підхід буде більш ефективний, ніж використання потоків. Тільки уявіть собі 65 тисяч потоків! Кошмар.
+
+Отже, для цього ми створимо цикл подій, який відстежуватиме події в сокетах, наприклад, коли сокет готовий до читання або запису. В операційних системах для цього є системні виклики, як-от `select()` чи `epoll()` в Linux, `kevent()` у деяких дистрибутивах FreeBSD і macOS, або `WaitForMultipleObjects()` у Windows.
+
+В Python вже є вбудована бібліотека `selectors`, яка забезпечує високорівневе та ефективне мультиплексування введення/виведення. За замовчуванням модуль використовує найбільш оптимальне рішення для вашої операційної системи (`DefaultSelector()`), і саме його ми використаємо.
+
+Основний план такий:
+1. **Створюємо обов'язково неблокуючий сокет:**
+
+```python
+import socket
+
+ADDRESS = ("3.230.67.98", 443)
+
+def connect():
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.setblocking(False) # !!! MUST HAVE
+    s.connect_ex(ADDRESS) # Використовуємо connect_ex, щоб уникнути виключення
+    return s
+```
+
+2. **Створюємо селектор, який моніторить сокети.** Метод `.register()` третім аргументом може містити будь-які дані. Ми будемо використовувати його для зберігання колбека — функції, яка викликатиметься, коли сокет буде готовий.
+
+```python
+import selectors
+
+sel = selectors.DefaultSelector()
+
+def on_connected(sock):
+    print("Socket connected!!")
+
+sock = connect()
+sel.register(sock, selectors.EVENT_WRITE, on_connected)
+
+```
+
+3. **SSL handshake:**
+
+```python
+import ssl
+
+ctx = ssl.create_default_ctx()
+
+req = b'GET / HTTP/1.1\r\nConnection: keep-alive\r\n\r' # <-- no \n at the end
+
+def delay(time, sock):
+    # Implement delay logic
+    sock.send(b'\n')
+
+def on_ssl_handske_completed(sock):
+    # Handskae completed
+    sock.send(req)
+    delay(55, sock)
+
+def on_connected(sock):
+    sock = ctx.wrap_socket(sock, ...)
+    try:
+        sock.do_handshake()
+    except ssl.SSLWantReadError:
+        ... # Handle this with selectors
+    except ssl.SSLWantWriteError:
+        ... # and this
+```
+
+4. Повтроємо
+
+```python
+while True:
+    events = sel.select()
+    for selector_key, event in events:
+        callback = selector_key.data
+        callback(selector_key.fileobj)
+```
+
+**Це лише загальний приклад.** Повний код буде доступний за посиланням.
