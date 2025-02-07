@@ -209,7 +209,7 @@ def on_connected(sock):
         ... # and this
 ```
 
-4. Повторюємо
+4. **Повторюємо:**
 
 ```python
 while True:
