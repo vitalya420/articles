@@ -67,7 +67,7 @@ $ nc 3.230.67.98 443
 
 Різниця між ними — 60 секунд. Таким чином, таймаут сервера становить **60 секунд**.
 
-**Примітка:** SSL Handhake не скидує таймаут.
+**Примітка:** SSL Handshake не скидує таймаут.
 
 ![Timings](https://github.com/vitalya420/articles/blob/main/images/timings.png?raw=true)
 
