@@ -283,6 +283,8 @@ c8750f0d.0: 1 file pushed, 0 skipped. 3.4 MB/s (1172 bytes in 0.000s)
    chcon u:object_r:system_file:s0 /system/etc/security/cacerts/*
    ```
 
+**Важливо!** Після перезавантаження вашого пристрою потрібно повторити ці кроки знову.
+
 Після цього ваш сертифікат буде розпізнаний системою як довірений. WebView працюватиме як треба. 
 
 ![WebView working](https://github.com/vitalya420/articles/blob/main/images/webview-working.png?raw=true)
