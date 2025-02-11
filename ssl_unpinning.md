@@ -79,11 +79,85 @@ java.net.ssl
 Отже, по логіці речей, десь у цій бібліотеці має бути функція, яка перевіряє SSL сертифікат. Він або довірений, або ні.  
 
 Чи можна змінити цю функцію так, щоб усі сертифікати завжди були довірені?  
+**Так, можна!** 
 
-**Саме так!**  
-І вказівник на цю функцію передається як третій аргумент у функції `SSL_set_verify`. Змінивши цей вказівник, можна змусити додаток довіряти будь-якому сертифікату.
+У бібліотеці OpenSSL є функції, які відповідають за валідацію сертифіката, такі як  
+`SSL_CTX_set_verify` та `SSL_set_verify`. Зосередимося на `SSL_set_verify`, оскільки саме вона відповідає за перевірку сертифіката сервера. Її сигнатура виглядає так:
 
-Так, це один із способів, і у нього є свої плюси та мінуси.
+```c
+void SSL_set_verify(SSL *ssl, int mode, SSL_verify_cb verify_callback);
+```
+
+- **Другий аргумент (`mode`)** визначає режим перевірки сертифіката. Наприклад, значення `SSL_VERIFY_PEER` означає, що сертифікат сервера обов’язково повинен бути перевірений.  
+- **Третій аргумент (`verify_callback`)** — це вказівник на функцію зворотного виклику, яка буде викликатися після верифікації сертифіката. Ця функція визначає, чи довіряти сертифікату.
+
+Однак цей підхід зазвичай використовується для нативного коду або десктопних програм. У випадку Android механізм валідації працює інакше.
+
+### Android і BoringSSL
+
+В Android використовується бібліотека `BoringSSL`, яка є форком OpenSSL, адаптованим для потреб Android. В `BoringSSL` реалізовано додаткову функцію `SSL_set_custom_verify`, яка використовується в Java-бібліотеці `conscrypt` для перевірки сертифікатів.
+
+Ця функція дозволяє задати власну логіку перевірки сертифікатів, яка виконується нативним кодом. Нижче наведено приклад із бібліотеки `conscrypt`, де викликається `SSL_set_custom_verify`:
+
+```c++
+static void NativeCrypto_SSL_set_verify(JNIEnv* env, jclass, jlong ssl_address,
+                                        CONSCRYPT_UNUSED jobject ssl_holder, jint mode) {
+    CHECK_ERROR_QUEUE_ON_RETURN;
+    SSL* ssl = to_SSL(env, ssl_address, true);
+    JNI_TRACE("ssl=%p NativeCrypto_SSL_set_verify mode=%x", ssl, mode);
+    if (ssl == nullptr) {
+        return;
+    }
+    SSL_set_custom_verify(ssl, static_cast<int>(mode), cert_verify_callback);
+}
+```
+
+### Хукаємо `SSL_set_custom_verify` з Frida
+
+Тепер ми можемо перехопити функцію `SSL_set_custom_verify` за допомогою Frida і замінити її логіку так, щоб сертифікати завжди вважалися валідними. Ось код на JavaScript:
+
+```js
+setTimeout(() => {
+    // Спершу знаходимо модуль libssl.so
+    const libssl = Process.getModuleByName("libssl.so");
+
+    // Шукаємо функцію SSL_set_custom_verify.
+    // getExportByName() повертає вказівник на неї
+    const SSL_set_custom_verify_ptr = libssl.getExportByName("SSL_set_custom_verify");
+    
+    // Створюємо нативну функцію для цієї адреси, щоб мати
+    // можливість викликати її
+    const SSL_set_custom_verify = new NativeFunction(SSL_set_custom_verify_ptr, 'void', ['pointer', 'int', 'pointer']);
+    
+    // Нативний callback, який завжди повертає 0
+    // Це означає, що сертифікат вважається валідним
+    const alwaysTrue = new NativeCallback(() => {
+        return 0;
+    }, 'int', ['pointer', 'pointer']);
+    
+    // Замінюємо оригінальну SSL_set_custom_verify на нашу функцію,
+    // яка викликає наш alwaysTrue callback
+    Interceptor.replace(SSL_set_custom_verify_ptr, new NativeCallback((ctx, mode, cb) => {
+        console.log("[+] SSL_set_custom_verify викликано");
+        SSL_set_custom_verify(ctx, 1, alwaysTrue);
+    }, 'void', ['pointer', 'int', 'pointer']));
+}, 0);
+```
+
+### Пояснення коду:
+1. **Пошук функції `SSL_set_custom_verify`**  
+   Ми знаходимо її у модулі `libssl.so` за допомогою `getExportByName`.
+
+2. **Створення NativeFunction**  
+   Ми створюємо `NativeFunction` для `SSL_set_custom_verify`, щоб мати можливість викликати її вручну.
+
+3. **Нативний callback (`alwaysTrue`)**  
+   Цей callback завжди повертає `0`, що означає успішну перевірку сертифіката.
+
+4. **Перехоплення і заміна функції**  
+   Ми використовуємо `Interceptor.replace` для заміни оригінальної функції на нашу, яка викликає `SSL_set_custom_verify` з нашим callback.
+
+Це один із способів, і у нього є свої плюси та мінуси.
 
 **Плюси:**
 - Не потрібно возитися із власним CA сертифікатом.
